@@ -1,0 +1,83 @@
+Tailwind for next.js setup
+-npm install -D tailwindcss@latest postcss@latest autoprefixer@latest
+-npx tailwindcss init -p (if u do this in cmd wont work, do in node terminal.
+- add this in tailwind.config-> mode:'jit' (speed up) just in time.
+-put this  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}']
+This tell to care/scan only about files in these folders-> pages and components
+
+
+
+twurs github- Botchmania@1
+What is it-
+It is a utility-first CSS framework that provides helper classes.It is low level
+
+Difference bt tailwind and frameworks like bootstrap,materialize, etc is that these are
+premade components like navbar, cards. A lot of these sites look same.
+Tailw just gives huge set of utility classes to build ur own components.(low-level)
+
+
+Including tailwind-
+1. Simply using CDN- https://tailwindcss.com/docs/installation#using-tailwind-via-cdn
+many of the features that make Tailwind CSS great are not available without
+ incorporating Tailwind into your build process.
+ -You can't customize Tailwind's default theme
+ -You can't use any directives like @apply, @variants, etc.
+Also using cdn will result in large file size which is not suitable for production
+
+-Post CSS
+ PostCSS parses CSS into an abstract syntax tree (AST), passes it through a series of plugins,
+and then concatenates back into a string(we get genereated CSS). If you’re familiar with JavaScript tooling,
+then you can think of PostCSS as Babel for CSS.
+
+-@tailwind base- directive that tells postCSS what tranform to apply- This injects Tailwind's base styles and any base styles registered by
+ * plugins.
+-@tailwind components- 
+
+-Building(behind the scenes stuff)
+npx tailwindcss-cli build input.css -o build/output.css 
+On running this a new folder build is created and output.css is created inside it. This file has 
+all the class styles like gird, padding, etc..huge file
+
+-Now for production project setup-
+1.npm init -y ->create package.json file-  this file holds various metadata relevant to the project.
+ This file is used to give information to npm that allows it to identify the project as well as handle
+ the project's dependencies. -y means --yes accept all default answers.
+
+- Creating twcss config file
+npx tailwindcss init --full
+-------NPM-------
+-save something as dev dependency if it is used only in development mode. -D flag eg.gulp-task runner
+syntax npm install gulp --save-dev
+
+------PostCSS-------(https://flaviocopes.com/postcss/#introduction)
+PostCSS is a tool that allows developers to write CSS pre-processors or post-processors, called plugins.
+sometimes the term “PostCSS” means the tool itself, plus the plugins ecosystem.
+PostCSS despite the name is not a CSS post-processor, but it can be used to build them, as well as other things
+An eg of PostCSS plugin is- Autoprefixer
+-Autoprefixer parses your CSS and determines if some rules need a vendor prefix.
+a {                     
+    display: flex;  
+}
+to
+a {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+#Note- by default in button tag the type is "submit".So it will submit form data
+
+# Apply directive
+-Used to create custom classes to avoid repeating long tailwind codes
+eg
+<div class="bg-white rounded overflow-hidden shadow-md relative "> and there are multiple elements with
+same styles
+-Now go in styles.css
+.card{
+ @apply bg-hite rounded overflow-hidden shadow-md relative 
+}
+Now we just have to do <div class="card"></div>
+<div class="card"></div>
+<div class="card"></div>
+-Have to rebuild

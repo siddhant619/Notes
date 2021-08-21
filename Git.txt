@@ -1,0 +1,42 @@
+A repo is a container for a project u want to track.
+Commits- Like safepoints in a game.
+Commits are snapshots of a point in time or points of interest along the timeline of a project's history
+-Unstage some file - git rm --cached index.html
+
+-To see all commits in one line
+git log --oneline
+#Undoing stuff
+We have already commited somefiles
+1.See state of code in earlier commit 
+git checkout [ID]
+-Commit history not altered
+To go back to current state
+git checkout master
+
+2.Revert
+Undo a particular commit. Original still in history of commits
+Creates a new commit -"revert commit
+
+3.
+
+#Branch
+-Create new branch
+git branch feature-1
+
+-List all branches
+git branch -a
+
+-Switch to branch 
+git checkout feature-1. Now if we do changes here(add then commit) and then switch to master then 
+all the changes will disappear in editor. But if we switch back to feature-1 they reappear.
+
+-Delete a branch 
+Go to master first
+git branch -D feature-1
+
+-Shortcut- create and switch to a branch(checkout)
+git checkout -b feature-a
+
+-Merge
+First go to the branch we want to merge into
+eg. git checkout master

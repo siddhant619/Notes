@@ -1,0 +1,129 @@
+Runs inside browser(js)
+-Cypress has a built in chromium browser(electron)
+-npm init -y. This creates a package.json file
+-npm install cypress
+-To launch it - npx cypress open (now cypress folder created)
+-Internally uses mocha
+
+#FOLDER STRUCTURE- https://www.youtube.com/watch?v=_DObJL2_lEs&list=PLUDwpEzHYYLu4jKg-rNSKH3aJeBinlPXp&index=7&ab_channel=SDET-QAAutomationTechie
+
+#HELLO WORLD
+/// <reference types="cypress" />
+describe('Empty test', ()=>{
+
+    it('test one', ()=>{
+        cy.visit('https://www.google.com/')
+    })
+})
+
+#An 'it' block defines a single test. Describe defines a test suite 
+
+#cy.contains(some text string)-> finds element with the string. Fails the test if 
+not present. REMEMBER CASE MATTERS HERE.
+
+#cy.get()
+-select element cy.get('div') cy.get('input')
+-select div with id root cy.get('div#root'). Another way cy.get('div[id=root]');
+-We should not target elements using classnames(coz they might change or if u use tailwind or css modules
+then very difficult to target class names).
+So use custom data attributes eg data-testid="testBtn" and target it like cy.get('[data-testid=testBtn]')
+
+#Click event
+cy.get('[data-testid=menutoggle]').click()
+
+#ASSERTIONS
+Assertions (are commands) describe the desired state of your elements, your objects, and your application.
+Assertions let you do things like ensuring an element is visible or has a particular attribute, CSS class, or state. 
+Cypress will automatically wait until your elements reach this state, or fail the test if the assertions don't pass
+EG.
+cy.get(':checkbox').should('be.disabled')
+
+cy.get('form').should('have.class', 'form-horizontal')
+
+cy.get('input').should('not.have.value', 'US')
+
+#Cypress automatically waits, blocks to reach the desired state 
+for eg. After clicking on this <button>, I expect its class to eventually be active.
+cy.get('button').click().should('have.class', 'active')
+This above test will pass even if the .active class is applied to the button asynchronously -
+ or after a indeterminate period of time.
+
+#VIEWPORT
+cy.viewport('iphone-5')
+cy.viewport(1290.720)
+
+#.only
+To run a specified suite or test, append .only to the function. 
+it.only()
+
+#CHECK IF A LINK WORKS
+cy.contains('Forgot password?').click()
+cy.url().should('include','password-reset')
+cy.go('back')
+
+#To log somehting on cypress 
+cy.log('going to forgot passwd page')
+This wont work cy.log('current log is =', cy.url()) coz cy. are async
+
+#TYPE SOMETHING - type into dom element
+cy.get('[data-testid=username]').type('admin')
+-Cypress mostly is smart enough to find the typable element inside div
+#Type special keys
+cy.get('something').type({ctrl}{c}).type('touch test.js{enter}') //so first type
+ctrl+c then type touch.. then enter
+
+#HOOKS
+-before and beforeEach
+describe('Hooks', () => {
+  before(() => {
+    // runs once before all tests in the block
+  })
+
+  beforeEach(() => {
+    // runs before each test in the block
+  })
+})
+
+#Specify time for timeout
+cy.contains('text', {timeout:1000}) //in ms. 
+
+#Check if an element is in viewport -> applies for elements which are hidden using 
+overflow:scroll  (ref-https://filiphric.com/cypress-basics-check-if-element-exists)
+get('something').should('be.visible')
+
+#Cypress fixures
+Load a fixed set of data located in a file(json, png,xml etc)
+
+#VISIBILIEY
+Be careful with negative assertions though, because sometimes the reason for that might
+ be that the element was not yet rendered because of a network lag etc. In case you want 
+to assert that an element stops existing, I suggest you first check that the element
+is visible (or exists) first:
+it('deletes a board', () => {
+
+  cy
+    .visit('/');
+
+  cy
+    .get('[data-cy=board-item]')
+    .should('exist');
+
+  cy
+    .request('DELETE', '/boards/2626653025');
+
+  cy
+    .get('[data-cy=board-item]')
+    .should('not.exist');
+
+});
+
+#.then()
+In Cypress, when you want to interact with a DOM element directly, call .then() with a callback 
+function that receives the element as its first argument. 
+cy.get('#element-does-not-exist')
+
+  // ...this code is never run...
+  .then(($myElement) => {
+    doSomething($myElement)
+  })
+

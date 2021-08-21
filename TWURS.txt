@@ -1,0 +1,116 @@
+1. INDEX PAGE - pages\index.tsx
+-An end to end experience(cards)
+	Bug- text overflows in distribution channels
+
+2. Demo product page- pages/demo (pass Twurs2021! )
+ -http://localhost:3000/demo/tours (Improv- after click put spinner on Preview button)
+	Check how lazy loading items are done
+	Check how searching,filetering works(improv- when clearing search we have to press enter, put spinner) 
+ -http://localhost:3000/demo/tours/preview/4d-3n-melbourne-discovery-ausmel0004m(lazy loading img)
+
+3. Shop- http://localhost:3000/shop/
+	-components\shop\ProductCard.tsx
+
+4.Functions functions/src/apis/sendcontactForm.tsx
+	-createUserProfile.ts (functions\src\user\createUserProfile.ts)
+
+5.Hooks
+	-scripts\hooks\useUserProfile.ts
+	-scripts\hooks\useRedirectPath.ts
+	-scripts\hooks\useProcessedDocument.ts
+	-scripts\validationUtils.ts
+
+6.Components
+	-components\app\ProductCard.tsx
+	-scripts\imageUtils.ts
+	-components\image\ResponsiveImage.tsx
+
+7 Layoutd
+	-components\wrappers\LayoutWrapper.tsx (MAIN ONE)
+	-components\layouts\landing\CookieNotice.tsx
+	-components\layouts\landing\Layout.tsx
+	-components\layouts\app\Layout.tsx (App dashboard layout, quite big, verifyemailbanner)
+	-components\layouts\landing\SearchModal.tsx (IMG. Search modal used in landing layout navbar and distributor layout navbar)
+
+########### DOING TWURS DOCS
+-Setup tailwind (from docs next.js link)
+-Install moment and moment-timezone(check difference)
+- Install react-calender
+-install tailwind/forms..etc plugins
+
+######### TAILWIND
+#Tailwind config. -https://tailwindcss.com/docs/theme#customizing-the-default-theme
+-If you'd like to preserve the default values for a theme option but 
+also add new values, add your extensions under the extend key in the
+theme section of your configuration file.
+-To override a key put it directly under theme
+
+#Outline-
+An outline is a line drawn outside the element's border.
+In tailwind, we can remove default outline on focus. eg.
+<input type="text"
+  placeholder="Custom focus style"
+  class="focus:outline-none focus:ring focus:border-blue-300 ..." />
+
+#Position
+if we put Position:absolute; top:0;bottom:0 then that element will span full
+height. https://codepen.io/team/css-tricks/pen/e7d3b934a8ce213384dc119106b71b7d
+In tailwind , we do this by inset-y-0.
+
+
+
+######## LEARNINGS
+-SVG stands for Scalable Vector Graphics. It’s a file format based on 
+a markup language similar to XML that allows developers and designers to
+create vector-based images using path definitions
+SVG tutorial - https://www.youtube.com/watch?v=MbUyHQRq2go&ab_channel=AdamWathan
+
+
+
+# JS Date object https://www.w3schools.com/js/js_dates.asp
+How to creaate - new Date() ->This will print a string if we console.log it. 
+But its type is object(so we have mehtods on it)
+-Methods on date object
+var d = new Date();
+d.getMonth()
+getTime()	Get the time (milliseconds since January 1, 1970)..THIS IS USED IN PROJ
+
+#Moment.js 
+moment(new Date()) -> gives a moment object for current date and time ( a big object,
+ expand the __proto__ and see the methods)
+-To use features of this lib we need to parse date into moment object
+
+#Parsing a string and making a moment object from it (Docs go to String+Format section. https://momentjs.com/docs/#/parsing/string-format/)
+eg moment("12-25-1995", "MM-DD-YYYY");
+eg moment('24/12/2019 09:15:00', "DD MM YYYY hh:mm:ss"); 
+1st arg is the string u want to parse(it is in my format not standared). 
+2nd arg we just put tokens from the tables in docs 
+
+There are other ways to create moment obj.(see dcode tutorial)
+
+#Adding, sub & manipulation date (https://momentjs.com/docs/#/manipulating/)
+-moment().add(7, 'days');
+-moment().subtract(7, 'days');
+-moment().startOf('year');
+
+
+-Formatting- display date in desired format (https://momentjs.com/docs/#/displaying/)
+syntax moment().format('Do MMM YYYY') -> 23rd Mar 2021
+eg moment().format("ddd, hA"); // "Sun, 3PM"
+eg moment().format("[Today is] dddd");               // "Today is Sunday"
+See all tokens- https://momentjscom.readthedocs.io/en/latest/moment/04-displaying/01-format/
+
+
+# react-textarea-autosize
+
+#react-calendar
+-To use default styling just import react-calendar\dist\Calendar.css in _app.js.
+(This is good enough, blue color theme)
+-To do custom styling. Copy the file node_modules\react-calendar\dist\Calendar.css
+contents into a file calendar.css inside styles folder and import it in _app.js and
+do the styling in this file.
+-To apply class names(and hence styles) to particular date use tileClassName
+prop. See code in index.js
+
+#How to iterate from 0 to names
+

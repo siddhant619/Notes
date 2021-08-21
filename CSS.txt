@@ -1,0 +1,266 @@
+-UNITS
+1.ABSOLUTE- pixels, cm,pt,etc
+2 Percentage- Mainly for setting widths(relative to parent). Wierd for height.
+3.RELATIVE- Two types- relative to font size , rel to viewport
+
+-em unit
+MDN-Relative to Font size of the parent, in the case of typographical properties like font-size, 
+and relative to font size of the element itself, in the case of other properties like width,margin,padding.
+Relative to parent's font size. Default is normally 16px.
+When using em for things other than font-size(like marg,padding) then it considers font-size of the current
+element(not parent). So changing font-size of an elemtn will automa change padding,margin of that elem(adv).
+Problem- If nested elements then sizes and become too large/small.
+
+-rem unit (root em)
+relative to root of html doc(ie. <html>)
+To specify font size put it in html{ font-size:12px}
+ 
+-GENERAL RULES
+-Font-size:rem
+-Padding margin:em
+-Width:em or percentage
+
+
+-RESPONSIVE CONTAINER
+.container{
+    margin:0 auto; //to center div
+    max-width: 700px;//So that div dosent get too wide on large screen size ie. size gets fixed after 700px
+    width: 90%; //to make responsive    
+}
+img{
+   width:100% //img resizes acc to container
+}
+
+-BLOCK ELEMENTS- A block-level element always starts on a new line and takes up the full width available
+ (stretches out to the left and right as far as it can).
+eg-div,footer,form,header,<hr>,li,main.
+
+-FLEXBOX
+Set dislay property to flex on parent element
+
+-FLEX-GROW
+Decides how to distribute the extra space bt items. If set to 0, leave the extra space as it is.
+If all items set to 1, distribute equally.If one of the children has a value of 2, the remaining 
+space would take up twice as much space as the others (or it will try to, at least).
+If one item set to flex-grow:2 and 2nd one flex-grow:1, then when they are expanded above their ideal width
+(ie.flex basis width), then 1st item will grow at rate twice that of 1st item
+
+-FLEX-SHRINK
+Same, as abv, just determines propotion at which item will shirnk if width becomes < ideal width.
+The default value is 1. If set to 0- then we’re telling this element not to shrink at all now, so might 
+break out of parent element
+
+
+-SET FIXED COLUMN WIDTH
+Method 1.Use flex-basis:(percent value)
+Method 2.set width:percent
+
+-SET HEIGHT TO MATCH CONTENT
+align-items:flex-start
+
+-MEDIA QUERIES
+@media media-type AND (media-features) {...}
+Media types
+-@media screen {...}
+-@media print {...}
+-@media speech {...}
+-@media all {...}
+Media conditions
+-@media (min-width:800px) {...}
+-@media (orientation:landspape) {...}
+-Specific features-  @media (hover) {...}
+
+eg
+/*For width>=600 */
+@media (min-width:600px){
+    body{
+        background-color: yellowgreen;
+    }
+}
+For min width the order should be increasing
+-Orientation
+@media (orientation: landscape) {
+    body {
+        color: rebeccapurple;
+    }
+}
+
+-User interaction (https://ferie.medium.com/detect-a-touch-device-with-only-css-9f8e30fa1134)
+-Hover
+The hover media feature is used to query the user’s ability to hover over elements on the page with the primary pointing device. 
+-@media (hover: hover/none) {
+    /* ... */
+}
+-Pointer
+The pointer media feature is used to query the presence and accuracy of a pointing device such as a mouse
+@media (pointer: coarse/fine/none) {
+    /* ... */
+}
+---
+Mobile screen
+@media (hover: none) and (pointer: coarse) {
+    /* ... */
+}
+
+#Some font styles
+-LINE-HEIGHT-
+Sets the space bt lines
+div{
+ line-height:1.3 //1.3 gets multiples to current font size
+}
+
+-LETTER SPACING
+.sometitle{
+letter-spacing: 0.2em;
+}
+
+-text-transform: uppercase;
+
+-GOOD PRACTICE- First work on typography first ie. font-sizes
+
+-Do this for every image (removes extra padding etc)
+img{
+    max-width: 100%;
+    display: block;
+}
+-To crop specific part of img
+object-position:left/right
+
+-Always try setting margin-bottom instead top
+
+#DIFF BT FLEXBOX & GRID
+Flex for 1-D layout while grid is for 2-D layout rows and cols.
+
+#Grid wrapper
+.wrapper
+{
+	display:grid;
+	grid-template-columns: 70% 30%; // grid-template-columns: 1fr 2fr 1fr; or grid-template-columns:repeat(3, 1f);
+	grid-column-gap:1em;
+	grid-row-gap:1em;//or combine.. grid-gap:1em
+}
+	
+# CSS SPECIFICITY AND !IMPORTANT ( https://uxengineer.com/css-specificity-avoid-important-css/ )
+
+- !important
+blockquote * {
+    font-style: italic!important;
+}
+What you’re actually doing in this case is increasing the specificity of everything inside 
+blockquotes to an unreasonably high level.
+By using !important, you’re essentially telling the browser that, under no circumstances should elements 
+inside of blockquotes ever be anything other than italic.
+
+0.0.0.0.0	*
+0.0.0.0.1	element or pseudo-element
+0.0.0.1.0	class, pseudo-class, or data attribute
+0.0.1.0.0	ID
+0.1.0.0.0	Inline style
+1.0.0.0.0	!important
+
+Ideal selector- class, pseudo-class, or data attribute
+
+# CRITICAL CSS READ THIS(performance) - https://www.smashingmagazine.com/2015/08/understanding-critical-css/
+
+# PSEUDO ELEMENTS (::before and ::after)..kevin powell
+:: -> pseudo elements (not mandatory but prefferred)
+: -> psuedo class
+
+.module .text::before{
+  background-color: blue;
+  content:'Some content';
+  color:white;
+  display:block;
+}
+<p class="text">
+	::before
+	Some more text
+</p>
+-So the content inside ::before get added before the CONTENT of the p element and not before <p> itself
+-Content is inline by default
+
+# USE CASES
+.intro::before{
+	content: url('...')
+}
+- content:attr(data-tooltip)
+
+#SELECT ONLY EVEN ELEMENTS
+EG
+.content div:nth-child(even){
+            background-color: #777;
+}
+
+---------------------------GRID---------------------------
+-Add the property display:grid to the grid container. This makes the container grid but no change until we
+define the no. of columns
+#COLUMNS
+-DEFINING COLUMN WIDTH(and no. of columns)-  grid-template-columns
+
+- Basic usage-
+-grid-template-columns: 33.3% 33.3% 33.3% ; //create 3 equal width column layout each with 33.3% witdth.Can vary widths to be different
+Now if for some element we specify 'width' explicitly. like width:400px the element might flow out of the
+grid container!(awkardly).
+
+- Better than %-  use fraction fr.
+Def(from csstricks)-This unit sets col width as a fraction of the free space of the grid container.
+eg
+.container {
+  grid-template-columns: 1fr 50px 1fr 1fr; //The free space is calculated after any non-flexible items!!(VVI). 
+In this example the total amount of free space available to the fr units doesn’t include the 50px:
+}
+When using fr the col width will be the max width of all elemnts in that column.(no wierd one element overflow like
+% ) and then other columns will have width based on fractions which will be based on the remaining space.
+
+- Using repeat()
+grid-template-columns: repeat(3,1fr );
+
+
+#ROWS
+By default, the row height is according to max height of each elemn in that row. For eg. if an elemtn has long content
+or it is set using height: property. 
+
+To override this use grid-auto-rows
+.container{
+ grid-auto-rows:200px ; //each row is fixed width and extra content hidden/overflow (based on z-index)
+}
+-But if we want a min height as well as not cutting off content use,
+grid-auto-rows:minmax(200px, auto) ; //min height 200px and max is acc to content
+
+#grid-template-rows: repeat(4, minmax(200px,auto)). //might leave space for unoccupied rows 
+
+#SPACING BT ROWS AND COLUMNS - grid-gap
+- grid-gap:1px 10px; //row column
+
+#GRID LINES
+-If 6 columns then there are 7 col lines and so on for rows also. Lines start from 1.
+-We can specify the lines(row and columns) that an element will take up
+
+-Suppose we want to element to span from col line 1 to line 3 (so element will span two columns)
+.one{
+ grid-column-start:1;
+ grid-column-end:3;
+ /* or short hand */
+ grid-column: 1 / 3;
+}
+
+-Can do same for row
+grid-row-start:2
+grid-row-end:5
+grid-row: 2 / 5
+
+-When using these properties grid template columns and rows will just act like drawing the grid lines and we would specify the line to span 
+for elements. 
+
+#Aligning & Justifying Items
+1. SPECIFY FOR THE GRID CONTAINER (so the properties are applied on all grid elements)
+-By default the grid items stretch to occupy the entire grid box(or boxes if the element is made to span multiple
+grid boxes). To change this
+-Along y axis(elem still takes the full width of the box)
+Use property align-items: start; /* end,stretch(default),center */
+Now the element will take only the height it needs (according to content inside, uncomment and see)
+-Along x axis
+Use justify-items: center; //or start,end, stretch(def)
+
+2.SPECIFY FOR AN ELEMENT 
+use align-self and justify-self

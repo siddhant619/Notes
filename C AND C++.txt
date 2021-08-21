@@ -1,0 +1,687 @@
+HEADER FILE-A header file is a file with extension .h which contains C function declarations 
+and macro definitions to be shared between several source files.
+
+-An assembly language is a low-level programming language designed for a specific type of processor
+
+--STATIC LINKING-Static linking is the process of copying all library modules used in the program 
+into the final executable image
+-DYNAMIC LINKING-  Dynamic linking lets several programs use a single copy of an executable module.
+Only a mapping to the lib modules is stored in the file.
+
+--new for classes- Does two things- allocated mem on heap and calls constructor
+while this - (Person*)malloc(sizeof(Person))- only allocates mem 
+
+#EXPLICT KEYWORD (gfg)
+ in C++, if a class has a constructor which can be called with a single argument, then this 
+constructor becomes conversion constructor because such a constructor allows conversion of 
+the single argument to the class being constructed. To avoid this implict call use explict keyword
+before constructor
+
+Declaration- Basicallly  of a variable or function simply declares that the variable or function exists 
+somewhere in the program, but the memory is not allocated for them. 
+ For variables-Tells type of variable
+ For function- Tells arguments, their data types, the order of those arguments, and the return type of the
+ function
+A variable is declared when the compiler is informed that a variable exists (and this is its type);
+ it does not allocate the storage for the variable at that point.
+
+Definiton- Everything that a declaration does + allocate memory for that variable or function. 
+
+#EXTERN
+FUNCTIONS- the extern keyword is implicitly assumed.
+VVI-Since the extern keyword extends the function’s visibility to the whole program, the function
+ can be used (called) anywhere in any of the files of the whole program, provided those files
+ contain a declaration of the function. (With the declaration of the function in place, the 
+compiler knows the definition of the function exists somewhere else and it goes ahead and compiles
+ the file). So that’s all about extern and functions.
+Using extern funciotn-https://riptutorial.com/c/example/3250/calling-a-function-from-another-c-file
+
+#FUNCTION POINTERS-
+-Unlike normal pointers, we do not allocate de-allocate memory using function pointers.
+-Unlike normal pointers, a function pointer points to code, not data. Typically a function 
+pointer stores the start of executable code.
+-Array of fptrs
+    void (*fun_ptr_arr[])(int, int) = {add, subtract, multiply};
+-Use- eg, search for array of any data type. Just create multiple compare functions for each data type
+ and pass it(fn pointer) to search() fn. Same for sort
+
+-POINTER TO CONSTANT- const int* p
+-CONSTANT POINTER- int* const p (read it as int* constant pointer)
+ There is no difference between const char *p and char const *p as both are pointer to a 
+const char and position of ‘*'(asterik) is also same.
+
+-FUNCTION OVERLOADING
+Function overloading is a feature in C++ where two or more functions can have the same name 
+but different parameters.
+-Functions that cannot be overloaded in C++
+1 Function declarations that differ only in the return type.
+int foo() { 
+  return 10; 
+}
+  
+char foo() { 
+  return 'a'; 
+}
+give compile err
+
+2.class Test {
+   static void fun(int i) {}
+   void fun(int i) {}   //but if void fun(int i,int j) ..possible
+};
+//give err
+3.int fun(int *ptr);
+  int fun(int ptr[]); // redeclaration of fun(int *ptr)
+
+
+-overloading vs overriding-
+-overloading-It provides multiple definitions of the function by changing signature i.e changing
+ number of parameters, change datatype of parameters, return type doesn’t play anyrole.
+It can be done in base as well as derived class. 
+
+-overriding-It is the redefinition of base class function in its derived class with SAME signature
+ i.e return type and parameters.
+It can only be done in derived class.
+Overriding of functions occurs when one class is inherited from another class. Overloading 
+can occur without inheritance.
+
+#METHOD HIDING- Base method gets hidden if there is a fn with same name(diff prototypes)
+class base {
+   public:
+       void fun(int i)
+       {
+           cout<<"base"<<endl;
+       }
+};
+class derived:public base
+{
+public:
+    void fun() //hides fun(int i)
+    {
+        cout<<"derived "<<endl;
+    }
+};
+int main()
+{
+    derived d;
+    d.fun(1);//even though this signature method is avaliable in base still it will give ERROR
+}
+
+##FACT- CPP. Size of an empty class is not zero. It is 1 byte generally. It is nonzero to ensure 
+that the two different objects will have different addresses.
+Tricky-
+class Empty { };
+ 
+class Derived: public Empty 
+{ int a; };
+ 
+int main()
+{
+    cout << sizeof(Derived); //gives 4 coz an empty base class need not be represented by a separate byte
+    return 0;
+}
+
+#Size of virtual derived
+class Empty {
+};
+class Derived2 : virtual public Empty {
+    char i;
+};
+sizeof(Derived2) is 8.(4 due to vitual pointer and 4 due to char(padding)). 
+
+#Diff bt 32 bit and 64 bit system
+-The diff is the way they handle memory. So to run a program it needs to be brought to RAM first.
+-The bit size refers to the memory that s/w or h/w can address.
+-So 32bit system can reference 2^32 bytes of mem== 4Gb
+-64 bits- 2^64 bytes 
+ 
+
+#STRUCTURAL PACKING AND PADDING
+struct Test{
+    char x;
+    char y;
+    int a;
+    char z;
+  	// |x||y||-||-|  |a||a||a||a| |z||-||-||-| hence 12 bytes
+};
+sizeof(Test) gives 12!, not 7. write #pragma pack(1) to get 7
+-Processor doesnt read 1 byte at a time. It reads 1 word at a time.
+-if 32 bit processor - word size is 4 bytes(coz 4*8). if 64 bit, ws- 8 bytes
+Padding is done so that int a for eg is read in 1 cpu cycle instead of 2 cycles. Coz in 1 
+cpu cyclle 1 word is read. 
+- We do packing to remove padding.
+
+#Virtual pointer
+-Compiler creates vptr if any member fn is virtual
+It is instance based. So if parent has vptr then child wont have it
+
+-V-table- A STATIC array of pointers(function pointers) is also created. Only addr of VIRTUAL FNS STORED
+-Seperate vtable for child classes.
+-Note that static members are not included in sizeof(classname). So vtable size is
+not add when doiong sizeof().
+-***The prototype of virtual functions should be the same in the base as well as derived class.
+
+#Virtual destructor https://www.geeksforgeeks.org/virtual-destructor/
+Normal destructor order execution- first derived then base.
+But if we use base pointer in delete ...then due to early  binding only base destructor called.
+To avoid this make base destructor as virtual. So now 1st derived destr then base destru called.
+
+#Object slicing
+Situation when you assign an object of a derived class to an instance of a base class
+class Base { int x, y; };
+  
+class Derived : public Base { int z, w; };
+
+Derived d;
+Base b = d; //Object Slicing,  z and w of d are sliced off
+Object slicing can be prevented by making the base class function pure virtual there by 
+disallowing object creation
+
+
+#TYPE INFERENCE- Auto keyword (gfg)
+The auto keyword specifies that the type of the variable that is being declared will be 
+automatically deducted from its initializer. In case of functions, if their return type is
+ auto then that will be evaluated by return type expression at runtime.   
+use-  to avoid long initializations when creating iterators for containers. 
+auto it=m.begin()
+
+#EXPLICITLY CALLING CONSTRUCTOR(cppnuts vid)
+Suppose class Base , now if we just explictly call constr like Base(), this creates a temporary
+obj and destrucor is call immeidately(dosent wait to get out of scope).
+Calling destr ~Base() possible but not recommended\
+eg
+int main()
+{
+    child(1,2);
+    cout<<"here ";
+
+}
+o/p-first destr called then "here" is printed
+eg.t.~Test(); // Explicit call to destructor
+https://www.geeksforgeeks.org/possible-call-constructor-destructor-explicitly/
+
+#HOW C++ IMPLEMENT FN OVERLOADING- Name mangling 
+The C++ compiler actually modifies the function names you give it internally, so that a function like
+int foo(int a, float b, char c) 
+is func_foo_int_float_char()
+ internally.
+
+#Final keyword
+-Prevent function overriding.
+-Prevent inheritance of a class
+SYNTAX
+class Base final {
+    // body
+};
+class Derived : public Base // compile error because base class is final
+{
+    // body
+};
+-For member function
+void fun() final //cant override now
+{
+
+}
+
+#Volatile qualifier(other qualifier is const)
+If a variable is declared volatile, then it turns off compiler optimization (if compliler sees that a 
+value is not changing it does some optimization, it might stop reading that variable), but the varialbe
+might change value due to some event outside the current program(eg peripheral devices, IO ports 
+(mainly memory mapped IO ports), Interrupt Service Routines (ISRs) ).
+
+3/5/21
+#INLINE FUNCTIONS
+-Inline function is a function that is expanded in line when it is called. 
+When the inline function is called whole code of the inline function gets inserted or substituted at the
+point of inline function call.
+-This substitution is performed by the C++ compiler at compile time.
+-Helpful for small functions. Gets rid of fn call overhead.
+
+#this pointer
+The ‘this’ pointer is a constant pointer, and it holds the memory address of the current object.
+
+#FRIEND class
+A friend class can access private and protected members of other class in which it is declared as friend
+eg.
+class Node {
+private:
+    int key;
+    Node* next;
+    /* Other members of Node Class */
+ 
+    // Now class  LinkedList can
+    // access private members of Node
+    friend class LinkedList;
+};
+Good examples- https://www.geeksforgeeks.org/friend-class-function-cpp/
+
+#Use of friend function - https://www.quora.com/What-are-some-situations-when-a-friend-function-can-be-useful-in-c++
+Overeloading << and >> (insertion and extraction Operator).
+
+
+#MAIN() IN C AND C++
+IN C- We can use void main(), but it gives nzec(According to coding standards, a good return program must 
+exit the main function with 0.). Acc to C standerd- int main(void)
+In C++- we cant write void main(). give compile error 
+So correct way in both is int main() with 0 return
+
+#DIFF BT int main() and int main(void) (gfg)
+A wierd thing about C- In C, if a function signature doesn’t specify any argument, it means that
+ the function can be called with any number of parameters or without any parameters.
+Eg 
+void fun() {  } 
+int main(void)
+{
+    fun(10, "GfG", "GQ"); //VALID IN C BUT NOT IN C++
+    return 0;
+}
+
+So the difference is, in C, int main() can be called with any number of arguments, but 
+int main(void) can only be called without any argument
+
+
+#Main diff bt struct and class is- by def struct members is public, reverse for class. Inheritance and all possible
+
+#DIFF BT C STRUCT AND C++ STRUCT(GFG)
+-According to coding standards, a good return program must exit the main function with 0.
+- We cannot directly initialize structure data members in C but we can do it in C++. 
+-C structures cannot have static members but is allowed in C++. 
+-: Structures in C cannot have member functions inside structure but Structures in C++ can have Constructor creation.
+- C structures do not have access modifiers as these modifiers are not supported by the language
+
+-9th may 2021
+#Program error signals-
+Signals in computers are a way of communication between the process 
+and the OS. When a running program undergoes some serious error then the OS sends a signal 
+to the process and the process further may not execute. 
+Signal and interrupt are basically same but a small distinction exists i.e interrupts are 
+generated by the processor and handled by the kernel but signals are generated by the kernel
+and handled by the process.
+
+eg
+SIGSEGV- The signal is generated when process tries to access memory location not allocated
+ to it, like de-referencing a wild pointer which leads to “segmentation fault”.
+SIGFPE –This error signal denotes some arithmetic error that occurred like division by 
+zero, floating point error
+
+
+#return(0) vs EXIT()
+When exit(0)(0 for success 1 for failure) is used to exit from program, destructors 
+for locally scoped non-static objects are not called(destructors for static objects 
+are still called for exit()). But destructors are called if return 0 is used.
+
+#What is evaluation order of function parameters in C?
+Compiler dependent-> cannot trust 
+
+#Does C support function overloading?
+No. But we can acheieve similar behaviour using void pointer. Have a void * type of pointer as 
+an argument to the function. And another argument telling the actual data type of the first
+argument that is being passed.
+int foo(void * arg1, int arg2){
+    if(arg2 == 0)
+    {
+    struct1PtrVar = (Struct1 *)arg1;
+    }
+    else if(arg2 == 1)
+    {
+    struct2PtrVar = (Struct2 *)arg1;
+    }
+    else
+    {
+    /*Error Handling*/
+    }
+}
+#What happens when a function is called before its declaration in C? WEIRD!!
+In C, if a function is called before its declaration, the compiler assumes return type of the
+function as int. Not in c++
+int main (void)
+{
+	printf("%d", sum());// runs fine in c not in C++. 
+	return 0;
+}
+int sum () //if return was char here, compile error
+{
+	return (4);
+}
+
+#ENUM https://www.javatpoint.com/enum-in-c
+-Enumeration (or enum) is a user defined data type in C. 
+-It is mainly used to assign names to integral constants, the names make a program 
+easy to read and maintain.
+-The enum is used when we want our variable to have only a set of values. 
+-We can also provide the values to the enum name in any order, and the unassigned
+names will get the default value as the previous one plus one.
+enum week{Mon, Tue, Wed};
+enum week day;
+day=Tue;
+
+#UNION
+-Like Structures, union is a user defined data type. In union, all members share the same 
+memory location.
+-At once, only one member of the union can occupy the memory
+-Size of a union is taken according the size of largest member in union.
+-Only the last entered data can be stored in the union. It overwrites the data previously stored in the union.
+
+
+#MEMORY LAYOUT OF C 
+1 Text Segment:  contains executable instructions.
+Usually, the text segment is sharable so that only a single copy needs to be in memory 
+for frequently executed programs, such as text editors, the C compiler, the shells, and 
+so on.
+
+2 Initialized Data Segment(Data segment): 
+A data segment is a portion of the virtual address space of a program, which contains the
+GLOBAL variables and STATIC variables that are INITIALIZED by the programmer. 
+Eg char s[]="asf" and int debug=1 declared OUTSIDE MAIN are in this segment
+static int i = 10; will be stored in the data segment and global int i = 10; will also 
+be stored in data segment
+
+3 Uninitialized Data Segment(block started by symbol)
+Data in this segment is initialized by the kernel to arithmetic 0 before the program starts executing
+contains all global variables and static variables that are initialized to zero or do not have 
+explicit initialization in source code.
+eg
+static int i;
+int j; (declared globally)
+
+4.Stack
+Stack, where automatic variables are stored, along with information that is saved each 
+time a function is called.
+Each time a recursive function calls itself, a new stack frame is used(so that it does not interfere)
+The newly called function then allocates room on the stack for its automatic and temporary variables
+Also, the address of where to return to and certain information about the caller’s 
+environment is stored
+ 
+5.Heap
+-Heap is the segment where dynamic memory allocation usually takes place.
+-The Heap area is managed by malloc, realloc, and free
+-When memory allocation is done, the actual heap space allocated is one word larger than 
+the requested memory. The extra word is used to store the size of the allocation and is 
+later used by free( )
+
+#DYNAMIC MEM ALLOCATION
+A way to change size of DS during run time.
+We need a way to req mem during runtim
+
+#What is Memory Leak? How can we avoid?
+Memory leak occurs when programmers create a memory in heap and forget to delete it.
+eg
+void f()
+{
+   int *ptr = (int *) malloc(sizeof(int));
+   return; /* Return without freeing ptr*/
+}
+Sol- use free
+free() vs delete (in c++)
+free() is a C library FUNCTION that can also be used in C++, while “delete” is a C++ KEYWORD.
+free() frees memory but doesn't call Destructor of a class whereas “delete” frees the 
+memory AND also calls the Destructor of the class.
+
+################################# STL ######################################
+
+#ARRAY STL-
+-fixed size container
+eg array<int, 5> ar2 = {1, 2, 3, 4, 5};
+for (auto i : ar1)
+   cout << i << ' ';
+
+#PAIR
+
+#TUPLE- Can store more than 2 values. 
+MAIN FEATURE - The elements can be of different data types.
+tuple <char, int, float> geek;
+geek = make_tuple('a', 10, 15.5);
+get() :- get() is used to access the tuple values and modify them, it accepts
+the index and tuple name as arguments to access a particular tuple element.
+get<2>(geek) =  20.5;
+
+#SEQUENTIAL CONTAINERS- VECTOR, array, list,tuple
+#ASSOCIATIVE CONTAINERS -map, set(here key is itself value), multimap, multiset
+
+#AVL VS RED-BLACK
+RB gives faster insertion and removal than AVL as fewer rotations are done due to relatively relaxed balancing.
+AVL trees provide faster lookups than Red Black Trees because they are more strictly balanced.
+USES-Red Black Trees are used in most of the language libraries like map, multimap, multiset in C++ whereas
+AVL trees are used in databases where faster retrievals are required.
+AVl tree use- VL trees are beneficial in the cases where you are designing some
+database where insertions and deletions are not that frequent but you have 
+to frequently look-up for the items present in there.
+
+#MAP and multimap STL
+IMPLEmented using RB tree.
+Searching - logn .Insertino- logn
+
+#SET
+Implementd as BST
+
+#unordered_map
+Open chaining. Array of linked list heads
+
+
+
+
+
+##########C puzzles ########
+-Note - 
+Main is called with argc as 1. Coz 1s argument is always program name..we can use this.
+Q print 1 to N without ;
+#define N 10
+int main(int num)
+{
+	while( num<=N && printf("%d", num) && main(num+1) )
+    {
+
+    }
+}
+
+
+                                            17th may 
+#STATIC KEYWORD IN C++- Beautiful article-https://www.geeksforgeeks.org/static-keyword-cpp/
+-Use of static members- you might use a static member function if you chose to use 
+a counter to give each instance of a class a unique id.
+-In C++, a static member function of a class cannot be virtual why?
+-Also, static member function cannot be const and volatile.- why?
+Code- https://www.cprogramming.com/tutorial/statickeyword.html#:~:text=Static%20member%20functions%20can%20be,a%20class%20a%20unique%20id.&text=%7D%3B
+
+-
+
+
+                                        19th may
+#Abstract class
+-By definition, an abstract class in C++ is a class that has at least 
+one pure virtual function (i.e., a function that has no definition).
+-The classes inheriting the abstract class must provide a definition
+for the pure virtual function; otherwise, the subclass would become
+an abstract class itself. eg.
+class Shape {
+   public:
+      virtual int Area() = 0; // Pure virtual function is declared as follows.
+      // Function to set width.
+      void setWidth(int w) {
+         width = w;
+      }
+      // Function to set height.
+      void setHeight(int h) {
+         height = h;
+      }
+
+   protected:
+      int width;
+      int height;
+};
+class Rectangle:public Shape
+{
+public:
+
+    Rectangle()
+    {
+        cout<<"in rect consr ";
+    }
+    int Area()//if i dont define Area here then Rectangle class lso become abstract, and we cant create object then
+    {
+        cout<<"Area is "<<width*height<<endl;
+    }
+};
+
+#INTERFACE
+-An interface does not have implementation of any of its methods, it can be considered 
+as a collection of method declarations.
+-In C++, an interface can be simulated by making all methods as pure virtual.
+
+                                        23rd may
+# POLYMORPHISM
+-Polymorphism is sharing a common interface for multiple types, but having different 
+implementation for different types.
+Two types
+1 Compile time-
+    A) Function overloadin- Same function name, differ in parameters. Two fns that 
+    differ only in return type are not overloaded.
+    B) Operator Overloading: Cant overload - ::, ?:, .(dot), sizeof().
+    Why- https://www.stroustrup.com/bs_faq2.html#overload-dot
+2 Run time
+    A) Virtual fns
+Eg. Like a man at the same time is a father, a husband, an employee. 
+
+#Virtual base class in C++
+Diamond problem 
+So, class B:public virtual A
+    class C:public virtual A
+
+#Private virtual functions- possible
+A public print() virtual function in base. Then a private print() fn in derived 
+overrides the print() on base.
+Note if we CAN call print() of derived class using pB->print() (if pb=&oD) even though
+print() is private in derived.(MAGIC)
+But oD.print() will give error coz print() is private.
+-Use
+This lets the derived classes override the function to customize the behavior 
+as needed, without further exposing the virtual functions directly 
+by making them callable by derived classes (as would be possible if 
+the functions were just protected). 
+https://www.geeksforgeeks.org/function-overloading-vs-function-overriding-in-cpp/
+
+                                        28th may
+#INLINE VIRTUAL FUNCTIONS
+-Whenever virtual function is called using base class reference or pointer it cannot
+be inlined (because call is resolved at runtime), 
+-Whenever virtual function is called using base class reference or pointer it cannot
+be inlined (because call is resolved at runtime), but code will still compile fine.
+Just the function we declared inline wont be inlined.
+
+-Stackoverflow
+The only time an inline virtual call CAN be inlined is when the compiler knows
+the "exact class" of the object which is the target of the virtual function call.
+This can happen only when the compiler has an actual object rather than a
+pointer or reference to an object. I.e., either with a local object, a global/static object, or a fully contained object inside a composite
+
+
+# Pure virtual destructor in C++
+-If we have a class with Pure virtual destructor, then it becomes abstract.
+-One catch though-  if a class contains a pure virtual destructor, it must provide
+a function body for the pure virtual destructor. Why? The reason is because 
+destructors (unlike other functions) are not actually ‘overridden’, rather they
+are always called in the reverse order of the class derivation. So we need a fnction body!
+eg
+class Base
+{
+public:
+    virtual ~Base()=0; // Pure virtual destructor
+};
+Base::~Base()
+{
+    std::cout << "Pure virtual destructor is called";
+}
+
+#Multiple inheritance eg- TA iherits from both student and teacher
+
+# Hierarchical Inheritance
+More than one sub class is inherited from a single base class. i.e. more than 
+one derived class is created from a single base. Vehicle class has 2 sub twowheeler and fourwheeler.
+Hybrid Inheritance is implemented by combining more than one type of inheritance. For 
+example: Combining Hierarchical inheritance and Multiple Inheritance. 
+
+# DISADV OF Inheritance
+-Inheritance increases the coupling between base class and derived class. A change 
+in base class will affect all the child classes.
+-Often, data members in the base class are left unused which may lead to memory wastage.
+
+#Sealed class in C++
+- Use final keyword C++ 11
+-https://www.geeksforgeeks.org/simulating-final-class-in-c/
+Using inheritance and friend fn.( Child class is parent of friend!!!!)
+
+                                        30th May
+
+# FOLLOWING ARE NOT INHERITED BY CHILD CLASS
+-The base class’s constructors and destructor.
+-The base class’s friends
+
+#HOW TO HIDE BASE CLASS METHODS
+-In C++, if a derived class redefines base class member method then all the base class
+methods with same name become hidden in derived class. 
+-Even if the signature of the derived class method is different, all the overloaded 
+in base class become hidden.
+- INTERESTING- If we want to overload a function of a base class, it is possible to unhide 
+it by using the ‘using’ keyword.
+class Base
+{
+public:
+    int fun()
+    {
+        cout<<"Base::fun() called";
+    }
+};
+ 
+class Derived: public Base
+{
+public:
+    using Base::fun; //OVERLOADING WITH Inheritance!!!!
+     
+    int fun(char c)  // Makes Base::fun() and Base::fun(int ) hidden
+    {
+        cout<<"Derived::fun(char c) called";
+    }
+};
+ 
+int main()
+{
+    Derived d;
+    d.fun();  // Works fine now 🙂
+    return 0;
+}
+
+ABSTRACTIION(AT DESIGN STAGE)-
+In C++, CLASSES provides great level of data abstraction. They provide sufficient public methods to
+ the outside world to play with the functionality of the object and to manipulate object data,
+ i.e., state without actually knowing how class has been implemented internally., they just need to know what it can do.
+EG- Function to calculate area is made public.eg tv remote only functions know not implementat.
+another eg-https://www.tutorialspoint.com/cplusplus/cpp_data_abstraction.htm (addition eg)
+How to acheieve abstraction-
+1. We can implement Abstraction in C++ using classes. Class helps us to group data members 
+and member functions using available access specifiers. A Class can decide which data member
+will be visible to outside world and which is not.
+2. Abstraction in Header files: 
+One more type of abstraction in C++ can be header files. Eg pow() from math.h
+Advantages-
+-Less complexity user dont have to know internal implementation
+--Abstraction reduces impact of change
+-Helps the user to avoid writing the low level code
+-Avoids code duplication and increases reusability.
+
+
+ENCAPSULATION(IMPLEMENTATION)(COMBO OF DATA HIDING AND ABSTRACTIION) -
+Encapsulation is a process of combining data members and functions in a single unit called class.
+This is to prevent the access to the data directly, 
+the access to them is provided through the functions of the class. VVI DIFFERENCT- PURPOSE IS SECUTIRY.
+ IMPLEMENT- 1) Make all the data members private.
+		    2) Create public setter and getter functions for each data member in such a way 
+that the set function set the value of data member and get function get the value of data member.
+eg- just make a class with an int memeber x and put getter and setter functions.
+It provides you the control over the data. Suppose you want to set the value of id which should
+be greater than 100 only, you can write the logic inside the setter method.
+It is a way to achieve data hiding in Java because other class will not be able to access the
+data through the private data members.
+
+INHERITANCE- obj- increase code resuablity. eg base class person(name,age), child classes student(roll) teacher(salary)
+
+POLYMORPH-“Polymorphism is sharing a common interface for multiple
+types, but having different implementation for different types"- AKL

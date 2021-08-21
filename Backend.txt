@@ -1,0 +1,57 @@
+#BASICS OF BACKEND
+Server receives the request from client in form of a URL. From the URL the Server can get almost all the 
+information it needs to process the request 
+eg.  http://youtube.com/path/query=value
+
+1. http-> Protocol for the request. https is for encrypted request.
+2. youtube.com-> The host or domain. It tells which server to send the request to.
+3. path -> Tells the server what the client wants from the server. Determines which section of server code to
+run to get the correct response. The server is broken down into different sections like /users, /cats, /dogs 
+4. query=value -> the query string what exactly to do.
+
+-Apart from this the server also needs to know action - GET, POST, PUT etc
+
+#Terminal and shell
+-A shell is a user interface for access to an operating system's services. Most often the user
+ interacts with the shell using a command-line interface (CLI). 
+ Shell is the program running on the terminal. 
+-The terminal is a program that opens a graphical window and lets you interact with the shell.
+-So a terminal app can run many different shells eg can run bash shell or zshell
+
+#Shells
+-Unix OS runs bourne shell by default.
+-Linux OS runs bash shell . Bash (bash) is one of many available (yet the most commonly used) 
+Unix shells. Bash stands for "Bourne Again SHell",and is a replacement/improvement of the original 
+Bourne shell (sh).
+-MacOS be default uses zshell.
+
+#Commands
+-pwd- print working directory
+-Go back two directories- cd ../../
+-Any path that begin with '/' is absolute. 
+-'/' in the prompt signifies root directory. Doing cd .. here wont do anything.
+-'~' in the prompt signifies home directory. Generally we start working from home directory
+-Touch - creates file else if file already exists it sets the modification
+
+######################################### NODE #########################################
+-Node is a cross platform runtime env for executing js code outside a browser. Used to build api etc.
+-After installing node. Just type node in git bash or cmd.
+Now we're in node REPL. It is like the node equivalent of js console in chrome. We obviously have
+the dom or window etc... in node 
+
+-To run a js file using node-
+node firstScript.js
+
+#MODULES
+-Export functions and variables from a file using module.exports object eg see math.js file in node folder.
+const myadd= (a,b)=> a+b
+const pi= 3.14
+module.exports.add=myadd
+module.exports.pi=pi
+
+-Now we can use these in other file 
+const math= require('./math');
+console.log( math.add(4,3));
+
+-Instead of module.exports.something we can just write exports.something. Remember to not assign
+exports directly (like exports="sdf")

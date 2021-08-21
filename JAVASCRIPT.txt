@@ -1,0 +1,354 @@
+-DATA TYPES- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures
+-String is immutable
+eg. var myVar = "Hello";
+    myVar[0] = "i";//still myVar remains same.
+String object has many methods which deal with string characters and all of them 
+returns a new String object instead of modifying the String object on which they are called.
+
+-NULL VS UNDEF
+A variable that has not been assigned a value has the value undefined
+
+-Symbols-A primitive data type to genereate unique values(used as keys in objects)for
+ identifiers. Behind the scenes they are gaint unique numbers sym1=Symbol('afs') 
+
+- It is important to remember that any data type that is not primitive data type,
+is of Object type in javascript
+
+-HOISTING-
+ variable and function declarations are moved to the top of their scope.(see copy for eg.).
+But this is not in fact what happens. Instead, the variable and function declarations are 
+put into memory during the compile phase, but stay exactly where you typed them in your code.
+
+-Difference between “ == “ and “ === “ operators
+“==” is used to compare values whereas, “ === “ is used to compare both value and types.
+var x = 2;
+var y = "2";
+(x == y)  // Returns true since the value of both x and y is the same
+(x === y) // Returns false since the typeof x is "number" and typeof y is "string"
+
+-Fact-Implict Type Coercion- When a number is added to a string, the number type is always 
+converted to the string type.
+var x = 24;
+var y = "Hello";
+x + y   // Returns "24Hello";
+var x = 3;
+Var y = "3";
+x - y    //Returns 0 since the variable y (string type) is converted to a number type
+
+All values except 0, 0n, -0, “”, null, undefined and NaN are truthy values.
+
+-JavaScript is a dynamically typed language. In a dynamically typed language, the type of a 
+variable is checked during run-time in contrast to statically typed language, where the type 
+of a variable is checked during compile-time. 
+eg var a = 23;
+var a = "Hello World!";
+-MDN
+Dynamically-typed languages are those (like JavaScript) where the interpreter assigns
+ variables a type at runtime based on the variable's value at the time.
+-We can assign anything to a variable and things don't break.
+
+-NaN-NaN property represents “Not-a-Number” value. It indicates a value which is not a legal number.
+
+-FACT-In JavaScript, primitive data types are passed by value and non-primitive data types are passed by reference.
+
+-Immediately Invoked Function in JavaScript
+(function(){ 
+  // Do something;
+})();
+
+-This 
+this keyword refers to an object, that object which is executing the current bit of javascript code.
+Another-The “this” keyword refers to the object that the function is a property of.
+
+//read-https://medium.com/@omergoldberg/javascript-call-apply-and-bind-e5c27301f7bb
+-Call,apply, bind are methods that live on a funciton(fn is also an object, but typeof function is 'function')
+-USE- Allows us to use a method on an object that does not exist on the object.
+-1.Call- function borrowing. This method invokes a method (function) by specifying the owner object.
+-2.Apply-call() method takes arguments separately whereas, apply() method takes arguments as an array.
+-3.Bind-This method returns a new function(a copy), where the value of “this” skeyword will be bound to the owner object
+, which is provided as a parameter.
+-Call/apply dont create a copy and are called immediately
+
+-Rest parameter
+function x(a,b,...arg) ->arg will be an array [3,4,5,6]
+x(1,2,3,4,5,6)
+ Rest parameter should always be used at the last parameter of a function
+
+-Spread operator (…)
+spread operator is used to spread an array, and object literals
+
+-What is the use of promises in javascript?
+Promises are used to handle asynchronous operations in javascript.
+A promise is created using the Promise constructor which takes in a callback function with two parameters, resolve and reject respectively.
+
+#Lesser known JS features(webdev simplified)
+
+-Nullish coalasing- 
+if(x===null || x===undef)
+
+a=x||10 so here we want a to be 10 if x is undef or null but if x===0(or '' or false) 
+we want 'a' to be 0, but this will ggive 10! (also for false,NaN,"" empty string)
+So use a=x??10
+MDN-The nullish coalescing operator (??) is a logical operator that returns its right-hand side operand when its left-hand side operand 
+is null or undefined, and otherwise returns its left-hand side operand. 
+
+-AND operator(MDN)-IF used with non-Boolean values, it will return a non-Boolean value.
+Syntax- expr1 && expr2
+"If expr1 can be converted to true, returns expr2; else, returns expr1."
+eg. 2 && 1 && 9 returns 9, ''&&2 gives ''
+
+-Optional chaining (?.) - If we have doubt on something(that it might be null/undef) put ?. after it, if trying
+to access some meth/proper of it.
+eg let x
+x.abc ->gives err cannot read property abc of undef
+x?.abc ->gives undefined. Here js 1st checks if x is undef or null. If it is then short circuit and return undef.
+Optional chaining with function calls
+let result = someInterface.customMethod?.(); ->return undefined instead of throwing an exception if the method isn't found:
+If we doubt that somInterface itself might be undef/null then someInterface?.customMethod?.(); 
+
+let object = {};
+object?.property = 1;//Invalid!
+
+Array access-
+let arrayItem = arr?.[42];
+
+
+-SCRIPT TAG POSITION
+1.At top, inside head tag without async/defer- when the parser finds this line, it goes to fetch the script and executes it. 
+Then, after it’s done with this task, it goes on to parse the body.BAD!!
+
+2.Just b3 closing body tag- the script is loaded and executed after all the page is already parsed and loaded,
+ which is a huge improvement over the head alternative.
+
+3.Using async(in head ofcourse)- Script is fetched asynchronously and when it’s ready the HTML parsing is
+ paused to execute the script, then it’s resumed.
+
+4.Using defer(in head ofcourse)-The script is fetched asynchronously, and it’s executed only after the HTML parsing is done.
+Best sol.
+
+
+--JS PAGE LOAD EVENTS (https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp)
+1.domLoading: this is the starting timestamp of the entire process, the browser is about to start parsing 
+the first received bytes of the HTML document.
+2.domInteractive: marks the point when the browser has finished parsing all of the HTML and DOM construction is complete.
+DOM is ready".Scripts marked def1er are executed right after the domInteractive event, which happens after the HTML is loaded, 
+parsed and the DOM is built.CSS and images at this point are still to be parsed and loaded.
+3.domContentLoaded-the browser fully loaded HTML and completed building the DOM tree.Main diff- There are no stylesheets that are blocking JavaScript execution
+Images etc not loaded yet
+4.domComplete: as the name implies, all of the processing is complete and all of the resources on the
+ page (images, etc.) have finished downloading -
+5.loadEvent: as a final step in every page load the browser fires an onload event which can trigger 
+additional application logic.
+
+
+#SAINI JS BASICS PLAYLIST
+-POLYFILL- A polyfill is a piece of code (usually JavaScript on the Web) used to provide modern
+ functionality on older browsers that do not natively support it. (Back support)
+-See video polyfill for bind
+
+############### JS OOPS
+# Mosh
+
+#Benefit of polymorphism
+Get rid of long if-else and switch statements. 
+switch '...':
+  case 'select':
+    renderSelect()
+  case 'text':
+    renderText()
+
+Instead in polymorphism we can do
+element.render()
+
+# WAYS OF CREATING OBJECTS
+
+1. Simple Object literals
+let obj={
+  radius:1
+  draw:function(){
+    ..
+  }
+}
+PROBLEM- To create multiple objects we have to duplicate code, so we have to wrie 
+same draw funciton multiple times.
+
+2.FACTORY FUNCTIONS
+Idea- a simple function that return an object
+function createCircle(r){
+    return{
+        radius:r,
+        draw:function(){
+            console.log('Drawwwwww')        
+        }
+    }
+}
+const obj=createCircle(10);
+obj.draw()
+console.log(obj.radius)
+
+3. Constructors
+NOTE- function name start with capital and we use new while createing obj.
+'New' does two things-create an empty obj and then sets 'this' to that new obj.
+If we dont put new this will point to window.
+
+function Circle(radius){
+    console.log(this) //this points to new object
+    this.radius=radius
+    this.draw=function(){
+        console.log('Drawwwwww')        
+    }
+}
+
+const obj=new Circle(100);
+obj.draw()
+console.log(obj.radius)
+
+4. USING CLASS KEYWORD
+class Color{
+            constructor(red,blue,gree,name){
+                this.r=red;
+                this.g=gree;
+                this.b=blue;
+                this.name=name;
+            }
+            greet(){//this is like Color.prototype.greet, previ. So greet is visible on __proto__ of c1
+                console.log(`Hello from ${this.name}`);//this refers to the individual object.
+                return this; //do this if we want METHOD CHAINING
+            }
+        }
+        const c1= new Color(10,30,21,"red");
+'new' keyword 
+-Creates new empty object
+-assigns 'this' to it
+-calls constructor
+
+#Constructor function
+Every object in js has a property on it called 'constructor' and this references 
+the function that was used to create that object.
+When we create obj like this
+let x={}
+Js internally converts it to this let x= Object()
+So if we call constructor on obj created using FACTORY we are using obj literal syntax
+so again Object() is used. Call .constructor on object created and see.
+Also we have constructor for String(), Boolean(), etc but we generally use literal
+
+# FUNCTIONS ARE OBJECTS
+For eg we can access properties on Circle function!
+Like Circle.name, Circle.length.
+Now we know every function is an object and every object has a 'constructor'.
+So what is the constructor of Circle function?
+Circle.constructor gives Function() constructor.
+
+So another way to create obj,
+//here we are creating function(Basically constructor fn from scratch)
+using Function() constructor. Passing in parametersand function body. 
+Docs https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/Function
+
+const Circle1= new Function('radius','area', ` 
+    this.radius=radius
+    this.area=area
+    this.draw=function(){
+        console.log('Drawwwwww')        
+    }
+    `
+)
+const c1=new Circle1(3,40)
+c1.draw()
+console.log(c1.area)
+
+# ACCESSING OBJECT properties
+let obj3={
+    radius:1,
+    draw:function(){
+        console.log('Drawwwwww')        
+    }
+  }
+obj3['radius'] or obj3.radius 
+Notice we have to use ' ' for bracket notation.
+When to use bracket-
+-When we want to dynamically access property name.
+eg let propertyName='radius'
+ obj3[propertyName]  // cant do obj3.propertyName
+
+eg. let propertyName='radius-location'
+cant do obj3.radius-location
+
+# MAKING MEMBERS PRIVATE
+function Circle(radius){
+
+    this.radius=radius
+    let pvt=function(){   //BECOMES PVT CAN ONLY BE ACCESSED INSIDE THIS FN
+        console.log('sshh pvt fn')
+    }
+    this.draw=function(){
+        pvt();
+        console.log('Drawwwwww')        
+    }
+}
+const c1=new Circle(3)
+c1.draw()
+c1.pvt()//cant access pvt() here
+
+# Object.defineProperty 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
+-The static method Object.defineProperty() defines a new property directly on an object,
+or modifies an existing property on an object, and returns the object.
+-eg 
+const object1 = {
+	property1:90
+};
+//Here we are modifying property1 , can also create a new property
+//o2 points to the same object object1
+const o2=Object.defineProperty(object1, 'property1', {
+  value: 420,
+  writable: false
+});
+
+object1.property1 = 77;
+// throws an error in strict mode
+
+console.log(o2.property1); //op- 420
+
+#GETTER AND SETTERS
+function Circle(radius){
+
+    this.radius=radius
+    let loc={
+        x:0,
+        y:0
+    }
+    this.getloc=function(){ //BAD GETTER COZ WE CAN ASSIGN getloc to some other function
+        return loc
+    }
+    this.draw=function(){
+        console.log('Drawwwwww')        
+    }
+    Object.defineProperty(this, 'location', {
+        get: function(){
+            return loc
+        },
+        set:function(value){
+            if(!value.x || !value.y) //ADV OF SETTER, we can do validation
+                //return orr throw error
+                throw new Error('Invalid locatoin')
+            loc=value
+        }
+    })
+}
+c1.location={ //using setter here
+    x:89
+    y:23
+}
+console.log(c1.location) //using getter here
+So in one property we can use both setter and getter
+
+
+
+
+My name is siddhant jaiswal. I am a final year student at IIEST, shibpur currently pursing
+B.tech in computer science and technology. I am based out of kolkata, india. I've had a passion for web development 
+since my early days in college. I always like upgrading myself by learning new technologies and working on projects. 
+Some of the web technologies that i have worked on are html, css , js, mysql and react.js and some other libraries
+around it like semantic UI, tailwindCSS and redux. Also to imporve upon my problem solving skills I like practicing
+coding various online platforms like hackerrank and leetcode.
+

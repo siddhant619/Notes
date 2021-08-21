@@ -1,0 +1,92 @@
+-JSX
+Javascript XML
+
+#REFS
+Allow us to access DOM nodes directly in react
+-In Class component
+class RefsDemo extends React.Component{
+	constructor(props)
+	{
+		super(props)
+		this.inputRef=React.createRef() 
+	}
+	componentDidMount(){
+		this.inputRef.current.focus(); //so when page loads this text field will be focused!!
+	}
+	render(){
+		return(
+			<input type="text" ref={this.inputRef} />
+		)
+	}
+}
+
+
+
+-Strict Mode in React.
+Like Fragment, StrictMode does not render any UI, it only activates checks and adds
+ warnings at runtime. Warnings-
+1. Using unsafe lifecycle methods- UNSAFE_componentWillUpdate(),UNSAFE_componentWillReceiveProps(),
+UNSAFE_componentWillMount()... use of these are discouraged. So strict mode will
+ throw warnings if theses are used in code (or maybe by third party lib)(Concurrent mode).
+2. Using legacy string refs-with an older API where the ref attribute is a string, like "textInput"
+Instead use React.createRef() or useRef() hook 
+
+-Prevent re-renders-  Use shouldComponentUpdate( ) method only when you are sure that it’s a static component.
+
+-State vs Props
+State-state object, which contains all the property values that belong to that component.
+Props-Using props, we can pass data from one component to another.
+ Props are read-only. They cannot be manipulated or changed inside a component.
+
+-Explain React Hooks.
+They let you use state(lifecycle) and other React features without writing a class.
+
+-What are the different ways to style a React component?
+1.Inline styling
+2.CSS stylesheet(i do)
+3.CSS modules
+4.Styled components(lib)-It removes the mapping between components and styles. This means that
+when you're defining your styles, you're actually creating  a normal React component,
+that has your styles attached to it.
+Syntax- const DIV= styled.htmlElemnet`color: pink`
+	<DIV>...</DIV>
+
+-Name a few techniques to optimize React app performance
+1.useMemo() hook- Use case- to compute a 'value', either through a complex calculation or
+ by reaching to the database to make a costly query or to the network.
+ Syntax - const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+ Using this calculation only happens once and value is stored(not gurantee) read docs.
+
+2.React.PureComponent
+React.PureComponent implements shouldComponentUpdate() with a shallow prop and state comparison.
+Prevents unneccary re-renders.
+If your React component’s render() function renders the same result given the same props and 
+state, you can use React.PureComponent for a performance boost in some cases.
+In fucntional components
+const MyComponent = React.memo(function MyComponent(props) {
+  /* render using props */
+});
+If your component renders the same result given the same props, you can wrap 
+it in a call to React.memo for a performance boost in some cases by memoizing 
+the result.
+
+3.Maintaining State Colocation -This is a process of moving the state as close to where you need it as possible.
+4.Lazy Loading -
+
+-Importance of keys
+Keys help react identify which elements were added, changed or removed.
+
+-HOC- 
+a higher-order component is a function that takes a component and returns a new component.
+const EnhancedComponent = higherOrderComponent(WrappedComponent);
+
+
+#HOOKS
+-Cant use hooks inside if(), functions, loops. So hooks cannot be nested inside anything, should be at
+top level 
+-We can pass a funciotn to useState().When to do it , useState(fibo(4)) , instead do
+ useState(()=>fibo(4))
+If we do useState(fibo(4)), then fibo(4) will run on every render (webdevsimplified).
+But if we do useState(()=>fibo(4)), then run only on 1st render.
+
+-When u update state the entire funciton runs.

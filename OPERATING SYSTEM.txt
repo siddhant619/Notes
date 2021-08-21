@@ -1,0 +1,74 @@
+WHAT HAPPENS WHEN U TURN ON PC
+https://tldp.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO/bootup.html
+Aim is to load OS
+1.BIOS chip tells pc where to look for boot loader
+2.Boot loader loads the kernal
+3.kernal now probs IO ports to see what's avaliable
+
+#Booting process
+A bootstrap program is the first code that is executed when the computer system is 
+started. The entire operating system depends on the bootstrap program to work
+correctly as it loads the operating system. It is in ROM
+The operating system is loaded into the RAM by the bootstrap program after the start 
+of the computer system. Then the operating system starts the device drivers.
+
+#System call 
+Provides interface to the services made avaliable by an os.
+S/w may trigger interrupt by executing special opearion called system call
+
+#Pipe
+-Pipe is a communication medium between two or more related or interrelated processes.
+It can be either within one process or a communication between the child and the parent processes
+- Communication can also be multi-level such as communication between the parent, 
+the child and the grand-child, etc
+
+# Primary mem can be both volatile and non-volatile (eg RAM ->volatile ROM->non-volatile)
+But secondary mem always non volatile
+
+#OVERLAYS
+Overlays is basically a programming method that divides processes into pieces so that
+instructions that are important and need can be saved in memory. It does not need any
+type of support from the OS. It can run programs that are bigger in size than physical memory by only keeping only important data and instructions that can be needed at any
+given time. 
+
+# page table
+Page Table is a data structure used by the virtual memory system to store the mapping
+ between logical addresses and physical addresses.
+In other words, the page table maps the page number to its actual location (frame number) 
+in the memory.
+
+# In paging, the type of fragmentation is internal.
+# In segmentation, the type of fragmentation is external.
+
+# What is the main objective of multiprogramming?
+-To overcome the problem of underutilization of CPU and main memory.
+-The main objective of multiprogramming is to have at least some processes running at 
+all times. It simply improves the utilization of the CPU as it organizes many jobs where the CPU always has one to execute.
+
+# CLUSTERING SYSTEMS
+Clustering systems are similar to parallel systems as they both have multiple CPUs.
+However a major difference is that clustered systems are created by two or more individual
+computer systems merged together.
+
+#Asymmetric Clustering System
+In this system, one of the nodes in the clustered system is in hot standby mode and all
+ the others run the required applications. The hot standby mode is a failsafe in which a 
+ hot standby node is part of the system . The hot standby node continuously monitors the 
+ server and if it fails, the hot standby node takes its place.
+-Resources such as memory, peripheral devices etc. are divided between the nodes of the
+asymmetric clustering system at boot time.
+-All the processors in the asymmetric clustering system are independent and only share
+ memory for inter process communications.
+
+#Symmetric Clustering System
+In symmetric clustering system two or more nodes all run applications as well as monitor 
+each other. This is more efficient than asymmetric system as it uses all the hardware
+ and doesn't keep a node merely as a hot standby
+
+# What do you mean by Sockets in OS?
+The socket in OS is generally referred to as an endpoint for IPC (Interprocess Communication)
+. Here, the endpoint is referred to as a combination of an IP address and port number.
+
+#AGING 
+It is a technique that is used to overcome the situation or problem of starvation. 
+It simply increases the priority of processes that wait in the system for resources for a long period of time

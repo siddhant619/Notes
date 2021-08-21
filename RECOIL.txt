@@ -1,0 +1,56 @@
+#Idea behind recoil-
+Recoil lets you create a data-flow graph that flows from atoms (shared state) through selectors
+ (pure functions) and down into your React components. 
+
+#ATOMS
+-Atoms are units of state that components can update and subscribe to.
+-When an atom is updated, each subscribed component is re-rendered with the new value.
+- If the same atom is used from multiple components, all those components share their state.
+Create file atoms.js
+export const fontSizeState = atom({
+    key: 'fontSizeState',
+    default: 28,
+  });
+
+
+Selectors- Selectors transform state either synchronously or asynchronously.
+-A selector is a pure function that accepts atoms or other selectors as input.
+-Use-to modify an existing state, or use an existing state to produce some other useful output.
+For eg we would have to use the currentContact state to fetch the details of the contact
+and produce a new state which contains the details of the currently selected contact. 
+For this purpose, to get a “derived state,” we use what’s known as a “selector”.
+-Components can subscribe to selectors just like atoms, and will then be re-rendered when the
+ selectors change.
+-For eg. As shown in the graph above, since the currentContactDetails selector depends on 
+the currentContact state. Whenever the currentContact state is updated, the currentContactDetails
+ is re-computed — i.e., new data is fetched according to the newly set currentContact.
+-The “selector” wrapper provided by Recoil (we’ll see how to implement this below) acts as
+ a “memoizer,” i.e., it caches the value corresponding to a certain input, so if you request
+ the same contact details again, it will directly fetch it from the cache rather than fetching
+ it from the server.
+-Syntax
+const fontSizeLabelState = selector({
+  key: 'fontSizeLabelState',
+  get: ({get}) => {
+    const fontSize = get(fontSizeState);
+    const unit = 'px';
+
+    return `${fontSize}${unit}`;
+  },
+});
+The get property is the function that is to be computed. It can access the value of atoms 
+and other selectors using the get argument passed to it. Whenever it accesses another atom 
+or selector, a dependency relationship is created such that updating the other atom or 
+selector will cause this one to be recomputed.
+
+-Reading atom or selector value
+Selectors can be read using useRecoilValue(), which takes an atom or selector as an argument
+and returns the corresponding value.
+
+
+#Data graph
+
+#useRecoilState
+-Has the same interface as the useState hook. It takes as an input an atom or a selector 
+-Returns an array with two values — the value itself and a setter function for this state.
+

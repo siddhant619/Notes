@@ -1,0 +1,3 @@
+Botchmania@1- notion
+-Real time db
+-NoSQL db- > we split data into collections and inside each collec. we store documnets(records). Document is basically like js object

@@ -1,0 +1,171 @@
+<script id="merchandising" type="text/x-handlebars-template">
+
+<div class = "card px-0 py-0 mx-2" style="margin-top:70px">
+
+   <div class="row p-0 ml-0 mr-1"> 
+		<div class="col-12 p-0" id="displayBanner_elem_row">
+			<div id="diaplayBanner_comp_row" class="comp_row">{{ render "carousel_Loading"}}</div>
+		</div>
+	</div>
+
+	<div name="element" class="togglebuttongroup group px-1 mt-3" style="overflow-x: auto;overflow-y: hidden;white-space: nowrap">
+	<button type="button" class="btn active-btn my-1 mr-0 ml-1 display-option toggle-btn btn-sm text-uppercase" onclick="displayMerchandisingOption(this)">Wall Fixtures</button>
+	<button type="button" class="btn my-1 mr-0 ml-1 toggle-btn display-option btn-sm text-uppercase" onclick="displayMerchandisingOption(this)">Gandola Fixtures</button>
+	<button type="button" class="btn my-1 mr-0 ml-1 toggle-btn display-option btn-sm text-uppercase" onclick="displayMerchandisingOption(this)">Nesting Table</button>
+	</div>
+
+    <center id="merchandising_comp_row" class="comp_row px-3 pb-3">
+       {{render "merchandisingForm"}}
+   </center>
+    </div>
+</script>
+
+<script id="merchandiseDisplayImage" type="text/x-handlebars-template">
+<div class="carousel" style="height:210px">
+ <div class="carousel-inner white" role="listbox">
+ <div class="carousel-item active">
+<div class="view">
+    <center>
+<img class="d-block" src="{{state.displayImage}}" style="height:210px">
+    </center>
+</div>
+</div>
+</div>
+</script>
+
+<script id="merchandisingForm" type="text/x-handlebars-template">
+<div id="remarks_elem_row" class="elem_row col-sm-12 col-md-12 col-lg-12 px-0 py-0">
+<div class="md-form md-outline form-lg mt-4 mb-3">
+<textarea type="text" id="remarks" name="element" class="md-textarea form-control py-2" rows="4" style = "width: 100%;overflow-y: auto;" required></textarea>
+<label for="remarks" style = "font-weight: 500;font-size: 15px;color: black;" class = "mt-2">Remarks</label>
+<p id="remarks_Validate" style="color: red;font-size: 10px!important; margin-top: -4px !important; word-break: break-word;text-align:left"></p> 
+</div>
+</div>
+
+  <div id="uploadImg_elem_row" class="elem_row p-3 mx-1 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px;">
+  <img id="uploadImg" class="camera" name="element" src = "SPA/MDB/img/uploadPhoto.png" height="50"  >
+  <div style="font-weight: 500;" class="mt-2 blue-clr">Upload Photo</div>
+  </div>
+
+<div id="uploadImg1_elem_row" class="elem_row p-3 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px;">
+    <img id="uploadImg1" class="camera" name="element" src = "SPA/MDB/img/uploadPhoto.png" height="50"  >
+    <div style="font-weight: 500;" class="mt-2 blue-clr">Upload Photo</div>
+</div>
+
+<div id="uploadImg2_elem_row" class="elem_row p-3 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px;">
+    <img id="uploadImg2" class="camera" name="element" src = "SPA/MDB/img/uploadPhoto.png" height="50"  >
+    <div style="font-weight: 500;" class="mt-2 blue-clr">Upload Photo</div>
+</div>
+
+<div id="uploadImg3_elem_row" class="elem_row p-3 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px;">
+    <img id="uploadImg3" class="camera" name="element" src = "SPA/MDB/img/uploadPhoto.png" height="50"  >
+    <div style="font-weight: 500;" class="mt-2 blue-clr">Upload Photo</div>
+</div>
+
+<button type="button" class="btn mt-4 px-4 text-white themeBg" style="width: fit-content;" onclick="sendMerchandisingInfo(this)">Send</button>
+
+</script>
+
+<script id="merchandising1" type="text/x-handlebars-template">
+		<div id = "merchandisingOption_comp_row" class = "card p-2 mt-2 mx-2 z-depth-0 mb-0" style="margin-top:65px ! important">
+		<div class = "d-flex w-100 my-1"> 
+			<div class="px-2 mt-3 mb-2 ml-2 label-border" style="">Purpose of Merchandising</div>
+		</div>
+		
+		<div id="merchOption_elem_row" class="elem_row col-sm-12 col-md-12 col-lg-12 pb-1 select-outline mb-1 px-0 mt-1">
+
+		 	{{#each state.featureConfig.param.elements}}
+				<div class="form-check ml-0 mb-2">
+					<input type="checkbox" class="form-check-input" id="{{ genId this.name}}" data-value="{{this.name}}"/>
+					<label class="form-check-label" style = "font-size:13px" for="{{ genId this.name}}">{{this.name}}</label>
+				</div>
+			{{/each}}
+		</div>
+
+		<div class = "d-flex w-100"> 
+			<div class="px-2 mt-3 mb-2 ml-2 label-border" style="">After Merchandising</div>
+		</div>
+	
+		<div id="uploadImg_elem_row" class="elem_row p-3 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px; height:50;">
+			<center><img id="uploadImg" class="camera" name="element" src="SPA/MDB/img/uploadPhoto.png" height="50"></center> 
+  			<center><div style="font-weight: 500;" class="mt-2 blue-clr">Upload Photo</div></center>	
+		</div>
+
+		<div id="remarks_elem_row" class="elem_row col-sm-12 col-md-12 col-lg-12 px-0 py-0">
+			<div class="md-form md-outline form-lg mt-3 mb-3 mx-1">
+				<textarea type="text" id="remarks" name="element" class="md-textarea form-control py-2 " rows="2" style = "width: 100%;overflow-y: auto;" required></textarea>
+				<label for="remarks" style = "font-weight: 500;font-size: 15px;color: black;" class = "mt-2 active">Remarks</label>
+				<p id="remarks_Validate" style="color: red;font-size: 10px!important; margin-top: -4px !important; word-break: break-word;text-align:left"></p> 
+			</div>
+		</div>
+		<center><button type="button" class="btn mx-auto mt-4 px-3 text-white themeBg" style="width: fit-content;font-size: 12px;padding-top: 8px !important;padding-bottom: 8px !important;border-radius: 5px !important;" onclick="sendMerchandisingInfo1()">Send</button> </center>				
+</script>
+
+<script id="merchandising2" type="text/x-handlebars-template">
+	<div id = "merchandisingOption_comp_row2" class = "text-muted card p-2 mt-2 mx-2  mb-0" style="margin-top:65px ! important; box-shadow:none ">
+		<div class = "d-flex w-100 my-1">
+			<div class="px-2 mt-3 mb-2 ml-2  " style="font-weight:600">{{appContext.translation.TK564}}</div>
+		</div>
+
+		<div id="merchOption_elem_row2" class=" embossCard1 elem_row col-sm-12 col-md-12 col-lg-12 pt-2 select-outline mb-1 px-0 mt-1">
+
+			{{#each state.featureConfig.param.elements}}
+
+			 <!--<div class="form-check ml-0 mb-2 ">
+				<input type="checkbox" class="form-check-input checkbox__input" id="{{ genId this.name}}" data-value="{{this.name}}"/>
+				<label class="form-check-label" style = "font-size:13px" for="{{ genId this.name}}">{{this.name}}</label>
+			</div>-->
+				{{render "checkboxField"  this.name  }}
+			{{/each}}
+		</div>
+
+
+		<div class = "d-flex w-100">
+			<div class="px-2 mt-3 mb-2 ml-2 " style="font-weight:600">{{appContext.translation.TK565}}</div>
+		</div>
+		<div class="embossCard1 mb-3" style="padding: 10px !important">
+			<div id="uploadImg_elem_row_pre" class="elem_row p-3 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px; height:50;">
+			<!--<center><img id="uploadImg_pre" class="camera" name="element" src="SPA/MDB/img/uploadPhoto.png" height="50"></center>
+			<center><div style="font-weight: 500;" class="mt-2 blue-clr">Upload Photo</div></center>-->
+				<center>
+					{{render "cameraInput" 'uploadImg_pre'}}
+				</center>
+			</div>
+		</div>
+
+		<div class = "d-flex w-100">
+			<div class="px-2 mt-3 mb-2 ml-2 " style="font-weight:600">{{appContext.translation.TK566}}</div>
+		</div>
+		<div class="embossCard1 mb-3" style="padding: 10px !important">
+			<div id="uploadImg_elem_row_after" class="elem_row p-3 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px; height:50;">
+				<center>
+					{{render "cameraInput" 'uploadImg_after' }}
+				</center>
+			</div>
+		</div>
+		<!--<div id="uploadImg_elem_row_after" class="elem_row p-3 grey-tint my-3" style="border: 1px dashed #797979;border-radius: 10px; height:50;">
+			<center><img id="uploadImg_after" class="camera" name="element" src="SPA/MDB/img/uploadPhoto.png" height="50"></center>
+			<center><div style="font-weight: 500;" class="mt-2 blue-clr">Upload Photo</div></center>
+		</div>-->
+		<div class = "d-flex w-100">
+			<div class="px-2 mt-3 mb-2 ml-2 " style="font-weight:600">{{appContext.translation.TK567}}</div>
+		</div>
+		<div id="remarks_elem_row2" class="elem_row col-sm-12 col-md-12 col-lg-12 px-0 py-0">
+			<!--<div class="md-form md-outline form-lg mt-3 mb-3 mx-1">
+				<textarea type="text" id="remarks2" name="element" class="md-textarea form-control py-2 " rows="2" style = "width: 100%;overflow-y: auto;" required></textarea>
+&lt;!&ndash;
+				<label for="remarks2" style = "font-weight: 500;font-size: 15px;color: black;" class = "mt-2 active">Remarks</label>
+&ndash;&gt;
+				<p id="remarks2_Validate" style="color: red;font-size: 10px!important; margin-top: -4px !important; word-break: break-word;text-align:left"></p>
+			</div>-->
+			{{render "textAreaField" 'remarks2'}}
+		</div>
+		
+		<center>
+<!--
+			<button type="button" class="btnColor theme-loginButton btn mx-auto mt-4 px-3 text-white " style="width: 50%;font-size: 12px;padding-top: 8px !important;padding-bottom: 8px !important;" onclick="sendMerchandisingInfo2()">Send</button>
+-->
+			{{render "sendButton" 'sendMerchandisingInfo2()'}}
+		</center>
+
+</script>

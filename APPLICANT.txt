@@ -1,0 +1,28 @@
+#JQUERY
+jquery statements return jquery objects (array llike..square bracket). It has accesss to jqeery properties
+It is easier to work with them .. like add animations etc.
+To return just normal html elemtent just use a[0],a[1]..so on 
+
+# CHROME DEV TOOLS
+-CTRL+SHIFT+i
+-
+#JSON
+-JSON can be array or object.
+-Everything in json is valid in js.
+-Key in json has to be inside double quotes.(JS objects
+might not have this).
+Value in json can be number,string,bool,array, object, null
+(JSON dosent have functions, but js objects have)
+egs.
+[	
+	50,
+	"asdf",
+	{
+		"age": 22
+	},
+	
+]
+{
+	"arr":[1,2,"afd",obj] //json dosent store references
+}
+

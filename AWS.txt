@@ -1,0 +1,167 @@
+Access link
+https://hsiworkdocs.awsapps.com/start#/
+
+#AWS Global Infrastructure
+-Avaliability zones- Kind of like data centers in a region. We can deploy our application in multiple
+avaliability zones and if one zone fails not gonna impact other avaliability zone.
+-Region- Has at least two avaliability zones
+
+# IAM - IDENTITY AND ACCESS MANAGEMENT
+-Root account created by default when we create an account, shouldn’t be used or shared.
+-Global sevice
+-Users are people within ur organization that can be grouped
+-Groups only contain users, not other groups
+-A user can belong to multiple groups
+-Why create users and groups - assign permissions
+-Users and groups can be assigned JSON documents called policies(these define permissoins)
+
+#Creating a user
+-A user is assigned to a group (best practice) and permission policies are assigned to the group
+so user inherits these permissions from the group.
+-On the IAM dashboard there is a link so that users can open their console entering the username
+and passord.
+-Note that the account no. will be same for each user created from an account.
+
+#IAM policies
+-IAM policies define permissions for an action regardless of the method that you use 
+to perform the operation. For example, if a policy allows the GetUser action, then a user
+with that policy can get user information from the AWS Management Console, the AWS CLI,
+or the AWS API.
+-Inline policy- policy attached to a single user.
+-A user can have more than one policies (coz a user can belong to more than one group 
+and also the user can be assigned an inline policies all at the same time!).
+
+#Protecting users -
+1. IAM- password policies
+Things like min passord length, specific charaters to include in password, allow all IAM Users
+to change password, password expiration.
+2. MFA(multi factor authoriaztion)
+
+-Go to IAM->Account settings..
+
+#Access AWS- Management console, CLI, SDK 
+
+#IAM Roles for Services 
+• Some AWS service will need to perform actions on your behalf
+• To do so, we will assign permissions to AWS services with IAM Roles
+• Common roles:  EC2 Instance Roles, Lambda Function Roles, Roles for CloudFormation
+AWS definition- An IAM role is an identity you can create that has specific permissions
+with credentials that are valid for short durations. Roles can be assumed by entities
+that you trust.
+Hands on- 
+Type of trusted entity is generally an AWS service(ec2, Lambda,)
+
+
+
+# EC2 - ELASTIC COMPUTE CLOUD
+-EC2 = Elastic Compute Cloud = Infrastructure as a Service
+- It mainly consists in the capability of :
+    • Renting virtual machines (EC2)
+    • Storing data on virtual drives (EBS)
+    • Distributing load across machines (ELB)
+    • Scaling the services using an auto-scaling group (ASG)
+-An Elastic Compute Cloud (EC2) instance is a virtual server that you can use to run applications
+in Amazon Web Services (AWS).
+- Iaas
+- Bootstraping - means launching commands when a m/c starts(EC2 user data script 
+is used to bootstrap our EC2 instances)
+- EC2 user data is used to automate boot tasks like-
+    -Installing updates/software
+    -downloading common files..etc
+- EC2 user data script runs with root user (sudo)
+
+#Creating ec2 instance
+-EC2 Instance: AMI (OS) + Instance Size (CPU + RAM) + Storage +
+security groups + EC2 User Data
+-Choosing AMI(amazon m/c image)- An AMI is a template that contains the software configuration
+ (operating system, application server, and applications) required to launch your instance.
+ Then choose instance type
+There are other steps too.
+-When restarting an ec2 instance the public IP changes but not pvt.
+
+#EC2 instance types
+https://aws.amazon.com/ec2/instance-types/
+
+#Security Groups
+-Firewall attached to the EC2 instance(but its outside the instance)
+Security Groups are the fundamental of network security in AWS
+They control how traffic is allowed into or out of our EC2 Instances
+Security groups only contain allow rules
+Security groups rules can reference by IP or by security group
+They regulate: 
+• Access to Ports 
+• Authorised IP ranges – IPv4 and IPv6 
+• Control of inbound network (from other to the instance) 
+• Control of outbound network (from the instance to other)
+-If loading takes forever to load(timeout) then mp security group issue.
+
+#SSH 
+Control a m/c remotely using a command line.
+In AWS we need to SSH into EC2 instance 
+
+#To provide credentials to an EC2 instance attach IAM roles to the instance (never enter credentials directly!!,
+since it will be accessible to all). 
+
+#EBS volume
+-An EBS (Elastic Block Store) Volume is a network drive you can attach
+to your instances while they run(kinda like network USB stick)
+-We can attach a volume to an ec2 instance in the same avaliability zone as the volume.
+-If we have delete on terminate option checked for an instance for ebs vol, then on deleting 
+instance the vol get deleted
+-EBS Snapshots -Make a backup (snapshot) of your EBS volume at a point in time.
+Can be used to copy snapshots across AZ or Region
+
+#AMI-  Amazon Machine image
+-AMI are a customization of an EC2 instance
+• You add your own software, configuration, operating system, monitoring…
+• Faster boot / configuration time because all your software is pre-packaged
+-AMI are built for a specific region (and can be copied across regions)
+-We can create an instance and then create an AMI using it (so the new AMI will include the 
+user data script entered while creating that instance) .
+So now we can create a new instance using the AMI created(choose my AMIs option instead of the
+AMI given by default from AWS).
+
+#EC2 image builder
+https://aws.amazon.com/image-builder/
+-Used to automate creation, validation, maintain and test EC2 AMIs (can be run on schedule1)
+
+############
+New user
+Username siddhant passwd- Botchmania@1
+
+#VPC (Virtual Private Cloud)
+-A virtual space into which we can launch our resources.
+-A vpc is a logically isolated portion of the AWS cloud within a region. VPC always contained inside 
+a region.
+-Can have multiple VPCs in a region.
+-Now we can create subnets within VPC. Subnets are created inside an avaliability zone.
+-An internet gateway is used to connect to the internet.
+
+#Security groups and network ACL
+-Security group applies at instance level.We can apply a security group to one or multiple 
+instances to control the traffic in and out of the EC2 instance.
+-We create security for a VPC 
+-While a network ACL applies at subnet level. So it only sees traffic in/out of the subnet
+-A security group can be applied to instances in any subnet. Also a network ACL can be applied to
+various subnets.
+-By default inbound for security group-> It allows all traffic coming from the same security group. 
+-Security group only supports allow rules. Network ACl has both allow and deny
+
+#NOTE- The IP 0.0.0.0/0 means any IP address
+
+#Stateful Firewall- Allows return traffic automatically. So no need to specify seperate rule.
+Security group is Stateful Firewall
+#Stateless Firewall- Checks for allow rule for both connections (return also).
+Network acl is stateless
+
+#Public and private services
+Private services- Services that we create inside amazon VPC. eg ec2, rds, elastic file system.
+Can have both public and private ip address (some control).
+Public service- Have public IP address/endpoints. eg dynamoDB, s3, cloudfront  
+
+#NAT gateway (nw address translation)
+Forwards connections to the internet (outside world). Used by private instances(which are in private subnet)
+to connect outbound to internet. NAT created in public subnets
+
+
+
